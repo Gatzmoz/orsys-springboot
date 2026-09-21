@@ -1,0 +1,17 @@
+{
+  "name": "orsys-1-0",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "scripts": {
+    "dev:web": "bun --filter web dev",
+    "dev:backend": "cd backend && ./mvnw spring-boot:run",
+    "dev": "turbo dev"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}

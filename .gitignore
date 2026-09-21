@@ -1,0 +1,43 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Next.js & Frontend build outputs
+.next/
+out/
+build/
+dist/
+
+# Java & Backend build outputs
+target/
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# PostgreSQL Data directory & Docker volumes
+data/
+
+# Logs & Error files
+logs/
+*.log
+*.pid
+hs_err_pid*
+replay_pid*
+
+# Environment variable files
+.env
+.env*.local
+
+# IDEs & OS files
+.idea/
+.vscode/
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# Testing & Coverage
+coverage/
+*.lcov
