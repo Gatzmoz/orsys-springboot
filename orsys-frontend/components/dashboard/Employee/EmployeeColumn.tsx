@@ -16,7 +16,7 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { MoreHorizontal } from "lucide-react";
+import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 
 // Use `accessor` for data columns and `display` for columns without one.
@@ -24,7 +24,16 @@ const columnHelper = createColumnHelper<DataTableFeatures, Employee>();
 
 export const columns = columnHelper.columns([
 	columnHelper.accessor("name", {
-		header: "Name",
+		header: ({ column }) => (
+			<Button
+				variant="ghost"
+				onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+				className="p-0 hover:bg-transparent"
+			>
+				Name
+				<ArrowUpDown className="ml-2 h-4 w-4" />
+			</Button>
+		),
 		cell: (info) => {
 			return (
 				<Link
@@ -36,20 +45,17 @@ export const columns = columnHelper.columns([
 			);
 		},
 	}),
-	// columnHelper.accessor("baseSalary", {
-	// 	header: "Base Salary",
-	// 	cell: (info) => {
-	// 		const value = info.getValue();
-	// 		if (!value && value !== 0) return "-";
-	// 		return new Intl.NumberFormat("id-ID", {
-	// 			style: "currency",
-	// 			currency: "IDR",
-	// 			maximumFractionDigits: 0,
-	// 		}).format(value);
-	// 	},
-	// }),
 	columnHelper.accessor("employeeStatus", {
-		header: "Status",
+		header: ({ column }) => (
+			<Button
+				variant="ghost"
+				onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+				className="p-0 hover:bg-transparent"
+			>
+				Status
+				<ArrowUpDown className="ml-2 h-4 w-4" />
+			</Button>
+		),
 		cell: (info) => {
 			const status = info.getValue();
 			if (!status) return "-";
@@ -91,7 +97,16 @@ export const columns = columnHelper.columns([
 		},
 	}),
 	columnHelper.accessor("employeeType", {
-		header: "Type",
+		header: ({ column }) => (
+			<Button
+				variant="ghost"
+				onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+				className="p-0 hover:bg-transparent"
+			>
+				Type
+				<ArrowUpDown className="ml-2 h-4 w-4" />
+			</Button>
+		),
 		cell: (info) => {
 			const status = info.getValue();
 			if (!status) return "-";
@@ -145,17 +160,44 @@ export const columns = columnHelper.columns([
 	}),
 	columnHelper.accessor((row) => row.position?.name || "-", {
 		id: "position",
-		header: "Position",
+		header: ({ column }) => (
+			<Button
+				variant="ghost"
+				onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+				className="p-0 hover:bg-transparent"
+			>
+				Position
+				<ArrowUpDown className="ml-2 h-4 w-4" />
+			</Button>
+		),
 	}),
 	columnHelper.accessor((row) => row.position?.division?.name || "-", {
 		id: "division",
-		header: "Division",
+		header: ({ column }) => (
+			<Button
+				variant="ghost"
+				onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+				className="p-0 hover:bg-transparent"
+			>
+				Division
+				<ArrowUpDown className="ml-2 h-4 w-4" />
+			</Button>
+		),
 	}),
 	columnHelper.accessor(
 		(row) => row.position?.division?.department?.name || "-",
 		{
 			id: "department",
-			header: "Department",
+			header: ({ column }) => (
+				<Button
+					variant="ghost"
+					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+					className="p-0 hover:bg-transparent"
+				>
+					Department
+					<ArrowUpDown className="ml-2 h-4 w-4" />
+				</Button>
+			),
 		},
 	),
 

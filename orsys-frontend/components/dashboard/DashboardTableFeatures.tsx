@@ -5,6 +5,7 @@ import {
 	createPaginatedRowModel,
 	createSortedRowModel,
 	filterFn_includesString,
+	globalFilteringFeature,
 	rowPaginationFeature,
 	rowSelectionFeature,
 	rowSortingFeature,
@@ -17,6 +18,7 @@ import {
 // register is tree-shaken out of the bundle.
 export const features = tableFeatures({
 	columnFilteringFeature,
+	globalFilteringFeature,
 	columnVisibilityFeature,
 	rowPaginationFeature,
 	rowSelectionFeature,
