@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
 import { SiteHeader } from "@/components/site-header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,12 +14,17 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import DashboardLayout from "@/layout/DashboardLayout";
-import { useDashboardData, usePositionsData } from "@/lib/api";
-import { ArrowLeftIcon, CameraIcon, SaveIcon, Trash2Icon, UserIcon, UserPlusIcon } from "lucide-react";
+import { useDashboardData, useEmployeeData, usePositionsData } from "@/lib/api";
+import { ArrowLeftIcon, CameraIcon, SaveIcon, Trash2Icon, UserIcon, UserCheckIcon } from "lucide-react";
 
-export default function AddEmployeePage() {
+export default function EditEmployeePage() {
+	const params = useParams();
 	const router = useRouter();
-	const { employees, isLoading: empLoading } = useDashboardData();
+	const rawId = params?.id;
+	const id = Array.isArray(rawId) ? rawId[0] : rawId;
+
+	const { employee, isLoading: empDataLoading, isError: empDataError } = useEmployeeData(id);
+	const { employees, isLoading: allEmpLoading } = useDashboardData();
 	const { positions, isLoading: posLoading } = usePositionsData();
 
 	const [formData, setFormData] = useState({
@@ -43,6 +48,29 @@ export default function AddEmployeePage() {
 	const [submitting, setSubmitting] = useState(false);
 	const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
+	// Pre-populate form data when employee details load
+	useEffect(() => {
+		if (employee) {
+			setFormData({
+				name: employee.name || "",
+				phoneNumber: employee.phoneNumber || "",
+				birthDate: employee.birthDate || "",
+				baseSalary: employee.baseSalary ? String(employee.baseSalary) : "",
+				photoURL: employee.photoURL || "",
+				employeeType: employee.employeeType || "FULLTIME",
+				employeeStatus: employee.employeeStatus || "ACTIVE",
+				positionId: employee.position?.id ? String(employee.position.id) : "",
+				managerId: employee.manager?.id ? String(employee.manager.id) : "",
+				fullAddress: employee.address?.fullAddress || "",
+				village: employee.address?.village || "",
+				district: employee.address?.district || "",
+				city: employee.address?.city || "",
+				province: employee.address?.province || "",
+				country: employee.address?.country || "Indonesia",
+			});
+		}
+	}, [employee]);
+
 	const handleChange = (
 		e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
 	) => {
@@ -54,7 +82,6 @@ export default function AddEmployeePage() {
 		const file = e.target.files?.[0];
 		if (!file) return;
 
-		// Limit file size to 5MB
 		if (file.size > 5 * 1024 * 1024) {
 			setErrorMsg("Photo file size must be less than 5MB.");
 			return;
@@ -114,8 +141,8 @@ export default function AddEmployeePage() {
 		};
 
 		try {
-			const res = await fetch("http://localhost:8080/api/employee", {
-				method: "POST",
+			const res = await fetch(`http://localhost:8080/api/employee/${id}`, {
+				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
 				},
@@ -123,12 +150,12 @@ export default function AddEmployeePage() {
 			});
 
 			if (!res.ok) {
-				throw new Error(`Failed to create employee (Status ${res.status})`);
+				throw new Error(`Failed to update employee (Status ${res.status})`);
 			}
 
-			router.push("/dashboard/employee");
+			router.push(`/dashboard/employee/${id}`);
 		} catch (err: any) {
-			setErrorMsg(err.message || "An error occurred while saving the employee.");
+			setErrorMsg(err.message || "An error occurred while updating the employee.");
 		} finally {
 			setSubmitting(false);
 		}
@@ -137,9 +164,42 @@ export default function AddEmployeePage() {
 	const selectClassName =
 		"flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50";
 
+	if (empDataLoading) {
+		return (
+			<DashboardLayout>
+				<SiteHeader title="Edit Employee Profile" />
+				<div className="p-6 max-w-5xl mx-auto flex h-64 items-center justify-center rounded-xl border border-dashed">
+					<p className="text-muted-foreground animate-pulse">Loading employee data...</p>
+				</div>
+			</DashboardLayout>
+		);
+	}
+
+	if (empDataError || !employee) {
+		return (
+			<DashboardLayout>
+				<SiteHeader title="Edit Employee Profile" />
+				<div className="p-6 max-w-5xl mx-auto space-y-4">
+					<Card className="border-destructive/20 bg-destructive/10 text-destructive">
+						<CardHeader>
+							<CardTitle>Error Loading Employee</CardTitle>
+							<CardDescription className="text-destructive/80">
+								Employee ID #{id} was not found or backend server is unreachable.
+							</CardDescription>
+						</CardHeader>
+					</Card>
+					<Button variant="outline" onClick={() => router.push("/dashboard/employee")}>
+						<ArrowLeftIcon className="w-4 h-4 mr-2" />
+						Back to Employee List
+					</Button>
+				</div>
+			</DashboardLayout>
+		);
+	}
+
 	return (
 		<DashboardLayout>
-			<SiteHeader title="Add New Employee" />
+			<SiteHeader title={`Edit Profile: ${employee.name}`} />
 
 			<div className="p-6 max-w-5xl mx-auto space-y-6">
 				{/* Top Header Actions */}
@@ -148,14 +208,14 @@ export default function AddEmployeePage() {
 						<Button
 							variant="outline"
 							size="sm"
-							onClick={() => router.push("/dashboard/employee")}
+							onClick={() => router.push(`/dashboard/employee/${id}`)}
 						>
 							<ArrowLeftIcon className="w-4 h-4 mr-2" />
-							Back to Employees
+							Back to Profile
 						</Button>
 						<h1 className="text-xl font-bold tracking-tight flex items-center gap-2">
-							<UserPlusIcon className="w-5 h-5 text-primary" />
-							Create Employee Record
+							<UserCheckIcon className="w-5 h-5 text-primary" />
+							Edit Employee #{id}
 						</h1>
 					</div>
 				</div>
@@ -240,7 +300,7 @@ export default function AddEmployeePage() {
 						<CardHeader>
 							<CardTitle>Personal Information</CardTitle>
 							<CardDescription>
-								Enter basic personal details for the new employee.
+								Update basic personal details for the employee.
 							</CardDescription>
 						</CardHeader>
 						<CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -369,15 +429,17 @@ export default function AddEmployeePage() {
 									value={formData.managerId}
 									onChange={handleChange}
 									className={selectClassName}
-									disabled={empLoading}
+									disabled={allEmpLoading}
 								>
 									<option value="">None (Top Level / No Manager)</option>
 									{employees &&
-										employees.map((emp: any) => (
-											<option key={emp.id} value={emp.id}>
-												{emp.name} ({emp.position?.name || "No position"})
-											</option>
-										))}
+										employees
+											.filter((emp: any) => String(emp.id) !== String(id))
+											.map((emp: any) => (
+												<option key={emp.id} value={emp.id}>
+													{emp.name} ({emp.position?.name || "No position"})
+												</option>
+											))}
 								</select>
 							</div>
 						</CardContent>
@@ -474,14 +536,14 @@ export default function AddEmployeePage() {
 						<Button
 							type="button"
 							variant="outline"
-							onClick={() => router.push("/dashboard/employee")}
+							onClick={() => router.push(`/dashboard/employee/${id}`)}
 							disabled={submitting}
 						>
 							Cancel
 						</Button>
 						<Button type="submit" disabled={submitting}>
 							<SaveIcon className="w-4 h-4 mr-2" />
-							{submitting ? "Saving..." : "Save Employee"}
+							{submitting ? "Updating..." : "Update Employee"}
 						</Button>
 					</div>
 				</form>

@@ -41,6 +41,7 @@ export type EmployeeResponseDTO = {
 	phoneNumber: string;
 	birthDate: string;
 	baseSalary: number;
+	photoURL?: string | null;
 	employeeType: string;
 	employeeStatus: string;
 	address?: AddressResponseDTO | null;

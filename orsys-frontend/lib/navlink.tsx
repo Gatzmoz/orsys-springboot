@@ -1,4 +1,5 @@
 import {
+	BuildingIcon,
 	CircleHelpIcon,
 	DatabaseIcon,
 	FileChartColumnIcon,
@@ -7,6 +8,7 @@ import {
 	SearchIcon,
 	Settings2Icon,
 	User2Icon,
+	UsersIcon,
 } from "lucide-react";
 
 export const navlink = {
@@ -22,13 +24,18 @@ export const navlink = {
 			icon: <LayoutDashboardIcon />,
 		},
 		{
-			title: "User Accounts",
-			url: "/dashboard/user",
-			icon: <User2Icon />,
-		},
-		{
 			title: "Employee Management",
 			url: "/dashboard/employee",
+			icon: <UsersIcon />,
+		},
+		{
+			title: "Organization Structure",
+			url: "/dashboard/organization",
+			icon: <BuildingIcon />,
+		},
+		{
+			title: "User Accounts",
+			url: "/dashboard/user",
 			icon: <User2Icon />,
 		},
 	],

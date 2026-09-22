@@ -222,7 +222,11 @@ export const columns = columnHelper.columns([
 					<DropdownMenuContent align="end">
 						<DropdownMenuGroup>
 							<DropdownMenuLabel>Actions</DropdownMenuLabel>
-							<DropdownMenuItem>Edit</DropdownMenuItem>
+							<Link href={`/dashboard/employee/${employee.id}/edit`}>
+								<a>
+									<DropdownMenuItem>Edit</DropdownMenuItem>
+								</a>
+							</Link>
 							<DropdownMenuItem>Delete</DropdownMenuItem>
 						</DropdownMenuGroup>
 					</DropdownMenuContent>

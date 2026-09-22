@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.gatzmoz.orsys.address.Address;
 import com.gatzmoz.orsys.organization.position.Position;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -17,6 +18,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -33,6 +35,10 @@ public class Employee {
     private String phoneNumber;
     private LocalDate birthDate;
     private Long baseSalary;
+
+    @Lob
+    @Column(columnDefinition = "TEXT")
+    private String photoURL;
     
     @OneToOne 
     @JoinColumn (name = "address_id")
@@ -63,12 +69,13 @@ public class Employee {
 
     }
 
-    public Employee(Long id, String name, Boolean isActive, String phoneNumber, LocalDate birthDate, Long baseSalary, Address address, Employee managerId, EmployeeType employeeType, Position position, EmployeeStatus employeeStatus, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Employee(Long id, String name, Boolean isActive, String phoneNumber, LocalDate birthDate, Long baseSalary, String photoURL, Address address, Employee managerId, EmployeeType employeeType, Position position, EmployeeStatus employeeStatus, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.birthDate = birthDate;
         this.baseSalary = baseSalary;
+        this.photoURL = photoURL;
         this.address = address;
         this.managerId = managerId;
         this.employeeType = employeeType;
@@ -102,6 +109,9 @@ public class Employee {
         return address;
     }
 
+    public String getPhotoURL(){
+        return photoURL;
+    }
     public Position getPosition() {
         return position;
     }
@@ -140,6 +150,10 @@ public class Employee {
 
     public void setBaseSalary(Long baseSalary) {
         this.baseSalary = baseSalary;
+    }
+
+    public void setPhotoURL(String photoURL) {
+        this.photoURL = photoURL;
     }
 
     public void setAddress(Address address) {
