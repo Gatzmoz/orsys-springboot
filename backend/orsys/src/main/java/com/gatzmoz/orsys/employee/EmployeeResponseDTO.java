@@ -51,10 +51,12 @@ record PositionSummaryDTO(Long id, String name, DivisionSummaryDTO division) {
 // Main DTO for Employee responses
 public record EmployeeResponseDTO(
     Long id,
+    String employeeCode,
     String name,
     String phoneNumber,
     String birthDate,
     Long baseSalary,
+    Gender gender,
     EmployeeStatus employeeStatus,
     EmployeeType employeeType,
     AddressResponseDTO address,
@@ -67,10 +69,12 @@ public record EmployeeResponseDTO(
         if (employee == null) return null;
         return new EmployeeResponseDTO(
             employee.getId(),
+            employee.getEmployeeCode(),
             employee.getName(),
             employee.getPhoneNumber(),
             employee.getBirthDate() != null ? employee.getBirthDate().toString() : null,
             employee.getBaseSalary(),
+            employee.getGender(),
             employee.getEmployeeStatus(),
             employee.getEmployeeType(),
             AddressResponseDTO.fromAddress(employee.getAddress()),

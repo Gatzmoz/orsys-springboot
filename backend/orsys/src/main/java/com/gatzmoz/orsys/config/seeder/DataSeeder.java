@@ -15,6 +15,7 @@ import com.gatzmoz.orsys.employee.Employee;
 import com.gatzmoz.orsys.employee.EmployeeRepository;
 import com.gatzmoz.orsys.employee.EmployeeStatus;
 import com.gatzmoz.orsys.employee.EmployeeType;
+import com.gatzmoz.orsys.employee.Gender;
 import com.gatzmoz.orsys.organization.department.Department;
 import com.gatzmoz.orsys.organization.department.DepartmentRepository;
 import com.gatzmoz.orsys.organization.division.Division;
@@ -113,11 +114,13 @@ public class DataSeeder {
             if (employeeRepository.count() == 0) {
                 // Employee 1: Gilang (Admin / Top Manager)
                 Employee gilangEmp = new Employee();
+                gilangEmp.setEmployeeCode("EMP001");
                 gilangEmp.setName("Gilang");
                 gilangEmp.setPhoneNumber("081234567891");
                 gilangEmp.setBirthDate(LocalDate.of(1995, 3, 10));
                 gilangEmp.setBaseSalary(12000000L);
                 gilangEmp.setManagerId(null);
+                gilangEmp.setGender(Gender.MALE);
                 gilangEmp.setEmployeeType(EmployeeType.FULLTIME);
                 gilangEmp.setEmployeeStatus(EmployeeStatus.ACTIVE);
                 gilangEmp.setPosition(payrollHead);
@@ -132,11 +135,13 @@ public class DataSeeder {
 
                 // Employee 2: Alif (Manager)
                 Employee alifEmp = new Employee();
+                alifEmp.setEmployeeCode("EMP002");
                 alifEmp.setName("Alif");
                 alifEmp.setPhoneNumber("081234567892");
                 alifEmp.setBirthDate(LocalDate.of(1996, 5, 14));
                 alifEmp.setBaseSalary(10000000L);
                 alifEmp.setManagerId(gilangEmp);
+                alifEmp.setGender(Gender.MALE);
                 alifEmp.setEmployeeType(EmployeeType.CONTRACT);
                 alifEmp.setEmployeeStatus(EmployeeStatus.LEAVE);
                 alifEmp.setPosition(backend);
@@ -151,11 +156,13 @@ public class DataSeeder {
 
                 // Employee 3: Anando (Employee)
                 Employee anandoEmp = new Employee();
+                anandoEmp.setEmployeeCode("EMP003");
                 anandoEmp.setName("Anando");
                 anandoEmp.setPhoneNumber("081234567893");
                 anandoEmp.setBirthDate(LocalDate.of(2000, 2, 18));
                 anandoEmp.setBaseSalary(7500000L);
                 anandoEmp.setManagerId(alifEmp);
+                anandoEmp.setGender(Gender.MALE);
                 anandoEmp.setEmployeeType(EmployeeType.INTERN);
                 anandoEmp.setEmployeeStatus(EmployeeStatus.TERMINATED);
                 anandoEmp.setPosition(salesStaff);

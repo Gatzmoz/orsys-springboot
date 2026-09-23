@@ -19,5 +19,10 @@ public class EmployeeService {
            .toList();
    }
 
+   public EmployeeResponseDTO getEmployeeById(Long id) {
+       return employeeRepository.findById(id)
+           .map(EmployeeResponseDTO::fromEmployee)
+           .orElseThrow(() -> new RuntimeException("Employee not found with id: " + id));
+   }
 
 }

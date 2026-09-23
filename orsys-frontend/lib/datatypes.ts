@@ -36,13 +36,15 @@ export type ManagerSummaryDTO = {
 
 export type EmployeeResponseDTO = {
 	id: number;
+	employeeCode: string;
 	name: string;
 	isActive: boolean;
 	phoneNumber: string;
 	birthDate: string;
 	baseSalary: number;
 	employeeType: string;
-	employeeStatus: string;
+	employeeStatus: "ACTIVE" | "INACTIVE" | "TERMINATED" | "LEAVE";
+	gender: "MALE" | "FEMALE" | "OTHER";
 	address?: AddressResponseDTO | null;
 	manager?: ManagerSummaryDTO | null;
 	position?: position | null;
@@ -51,3 +53,9 @@ export type EmployeeResponseDTO = {
 };
 
 export type Employee = EmployeeResponseDTO;
+
+export type ProfileFieldProps = {
+	icon?: React.ReactNode;
+	label: string;
+	value: string;
+};

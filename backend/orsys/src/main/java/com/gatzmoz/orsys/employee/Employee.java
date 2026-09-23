@@ -29,6 +29,7 @@ public class Employee {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String employeeCode;
     private String name;
     private String phoneNumber;
     private LocalDate birthDate;
@@ -59,13 +60,17 @@ public class Employee {
     @Enumerated(EnumType.STRING)
     private EmployeeStatus employeeStatus;
 
+    @Enumerated (EnumType.STRING)
+    private Gender gender;
+
     public Employee(){
 
     }
 
-    public Employee(Long id, String name, Boolean isActive, String phoneNumber, LocalDate birthDate, Long baseSalary, Address address, Employee managerId, EmployeeType employeeType, Position position, EmployeeStatus employeeStatus, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Employee(Long id, String name, String employeeCode, Boolean isActive, String phoneNumber, LocalDate birthDate, Long baseSalary, Address address, Employee managerId, EmployeeType employeeType, Position position, Gender gender, EmployeeStatus employeeStatus, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.name = name;
+        this.employeeCode = employeeCode;
         this.phoneNumber = phoneNumber;
         this.birthDate = birthDate;
         this.baseSalary = baseSalary;
@@ -73,6 +78,7 @@ public class Employee {
         this.managerId = managerId;
         this.employeeType = employeeType;
         this.employeeStatus = employeeStatus;
+        this.gender = gender;
         this.position = position;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -84,6 +90,10 @@ public class Employee {
 
     public String getName() {
         return name;
+    }
+
+    public String getEmployeeCode() {
+        return employeeCode;
     }
 
     public LocalDate getBirthDate() {
@@ -106,6 +116,10 @@ public class Employee {
         return position;
     }
 
+    public Gender getGender() {
+        return gender;
+    }
+
     public Employee getManagerId() {
         return managerId;
     }
@@ -124,6 +138,10 @@ public class Employee {
 
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
+    }
+
+    public void setEmployeeCode(String employeeCode) {
+        this.employeeCode = employeeCode;
     }
 
     public void setName(String name) {
@@ -146,6 +164,10 @@ public class Employee {
         this.address = address;
     }
 
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
     public void setManagerId(Employee managerId) {
         this.managerId = managerId;
     }
@@ -153,6 +175,7 @@ public class Employee {
     public void setEmployeeType(EmployeeType employeeType){
         this.employeeType = employeeType;
     }
+
 
     public void setEmployeeStatus(EmployeeStatus employeeStatus){
         this.employeeStatus = employeeStatus;
@@ -169,4 +192,5 @@ public class Employee {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }   
+
 }
